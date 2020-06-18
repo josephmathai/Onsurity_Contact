@@ -13,6 +13,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
@@ -311,6 +312,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void logout() {
+        SharedPreferences.Editor editor = getSharedPreferences(LoginActivity.MY_PREFS_NAME, MODE_PRIVATE).edit();
+        editor.putString("token", null);
+        editor.apply();
+
         Intent intent = new Intent(this, LoginActivity.class);
         intent.putExtra(LoginActivity.EXTRA_CLEAR_CREDENTIALS, true);
 

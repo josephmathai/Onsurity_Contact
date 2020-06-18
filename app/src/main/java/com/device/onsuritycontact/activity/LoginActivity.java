@@ -2,6 +2,7 @@ package com.device.onsuritycontact.activity;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -23,6 +24,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private Auth0 auth0;
 
+    public  static final String MY_PREFS_NAME = "onsurityContact";
+
     public static final String EXTRA_CLEAR_CREDENTIALS = "com.auth0.CLEAR_CREDENTIALS";
     public static final String EXTRA_ACCESS_TOKEN = "com.auth0.ACCESS_TOKEN";
 
@@ -39,12 +42,24 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+        String token = prefs.getString("token", null);//"
+
+
         auth0 = new Auth0(this);
         auth0.setOIDCConformant(true);
 
         //Check if the activity was launched to log the user out
         if (getIntent().getBooleanExtra(EXTRA_CLEAR_CREDENTIALS, false)) {
+
             logout();
+        }
+
+        if (token != null) {
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            intent.putExtra(EXTRA_ACCESS_TOKEN, token);
+            startActivity(intent);
+            finish();
         }
     }
 
@@ -53,6 +68,8 @@ public class LoginActivity extends AppCompatActivity {
                 .withScheme("demo")
                 .withAudience(String.format("https://%s/userinfo", getString(R.string.com_auth0_domain)))
                 .start(this, new AuthCallback() {
+
+
                     @Override
                     public void onFailure(@NonNull final Dialog dialog) {
                         runOnUiThread(new Runnable() {
@@ -82,6 +99,9 @@ public class LoginActivity extends AppCompatActivity {
                                 intent.putExtra(EXTRA_ACCESS_TOKEN, credentials.getAccessToken());
                                 startActivity(intent);
 
+                                SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+                                editor.putString("token", credentials.getAccessToken());
+                                editor.apply();
 
                                 finish();
                             }
