@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Onsurity Contact</string>
+
+    <string name="com_auth0_client_id">Jo9LW3i75P9564ikZMoYcOW4N1xUzlPr</string>
+    <string name="com_auth0_domain">dev-zvn3jrxw.us.auth0.com</string>
+    <string name="login">Log in / Sign up using auth0</string>
+    <string name="logout">Log out</string>
+</resources>
