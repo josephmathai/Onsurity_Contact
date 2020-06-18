@@ -64,7 +64,7 @@ public class ContactDetailsActivity extends AppCompatActivity {
         // email intent :- only enable button with valid email id
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/html");
-        intent.putExtra(Intent.EXTRA_EMAIL, contactsModel.getEmail());
+        intent.putExtra(Intent.EXTRA_EMAIL, new String[] {contactsModel.getEmail()});
         intent.putExtra(Intent.EXTRA_SUBJECT, "From Onsurity Contact app");
         intent.putExtra(Intent.EXTRA_TEXT, "This is email body.");
 
